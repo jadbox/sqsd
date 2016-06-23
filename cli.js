@@ -93,9 +93,7 @@ s.start()
     })
 
 process.on('SIGTERM', function () {
-  s.close(function () {
-    process.exit(0);
-  }).then(()=>{
+  s.close().then(()=>{
       process.exit(0);
   })
   .catch( err=> {
