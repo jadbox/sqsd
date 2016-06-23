@@ -1,11 +1,13 @@
+f
+# SQSD
 
-# SQSD 
+THIS BRANCH TRIES TO ENSURE EXACTLY-ONCE DELIVERY
 
 A simple alternative to the Amazon SQS Daemon ("sqsd") used on AWS Beanstalk worker tier instances. Inspired by https://github.com/mozart-analytics/sqsd, rewriten for Node.js.
 
 
-[AWS Beanstalk](http://aws.amazon.com/elasticbeanstalk/) provides a simple to use *Worker Environment Tier* 
-([more info](http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features-managing-env-tiers.html)) that greatly streamlines the deployment of passive worker microservices for background or async processing. 
+[AWS Beanstalk](http://aws.amazon.com/elasticbeanstalk/) provides a simple to use *Worker Environment Tier*
+([more info](http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features-managing-env-tiers.html)) that greatly streamlines the deployment of passive worker microservices for background or async processing.
 
 ![aws-eb-worker](http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/images/aeb-messageflow-worker.png)
 *(diagram by AWS - available [here](http://aws.amazon.com/elasticbeanstalk/))*
@@ -20,28 +22,29 @@ But even more important! **We have "dockerized" it** so that you can use it as a
 
 Following are detailed instructions of configuration and usage with and without Docker. Any changes, suggestions or Forks are welcome!
 
-## Technologies / Environments Used 
+## Technologies / Environments Used
 - Node.js 4+
 - AWS Node SDK 2.2.26+
 
-## Usage 
+## Usage
 
-### Configuration 
+### Configuration
 There are 2 ways to configure the `sqsd`'s properties: Environment Variables or a configuration file. You must set one of the two options.
 
-#### Using Configuration File 
+#### Using Configuration File
 Custom properties are loaded from `config/sqsd-config.groovy`.
 
-#### Using Environment Variables 
+#### Using Environment Variables
 Environment Variables and defaults are loaded from `config/sqsd-default-config.groovy`.
 
 | **Property**                            | **Default**        | **Required**                       | **Description**                                                                               |
 |-----------------------------------------|--------------------|------------------------------------|-----------------------------------------------------------------------------------------------|
 | `AWS_ACCESS_KEY_ID`                     | -                  | no                                 | Your AWS Access Key.                                                                          |
 | `AWS_SECRET_ACCESS_KEY`                 | -                  | no                                 | Your AWS secret access secret.                                                                |
+| `SQSD_MAX_MESSAGES_PER_REQUEST`         | `10` (max: `10`)   | no                                 | Max number of messages to retrieve per request.                                               |
 | `SQSD_QUEUE_REGION_NAME` or `AWS_DEFAULT_REGION`| `us-east-1`        | no                                 | The region name of the AWS SQS queue                                                          |
 | `SQSD_QUEUE_URL`                        | -                  | yes                                | Your queue URL.                                                                               |
-| `SQSD_MAX_MESSAGES_PER_REQUEST`         | `10` (max: `10`)   | no                                 | Max number of messages to retrieve per request.                                               |
+| `SQSD_MAX_REQUESTS`                     | `10`               | no                                 | Max number of requests to send workers at any one time (best try)                             |
 | `SQSD_RUN_DAEMONIZED`                   | `0`                | no                                 | Whether to continue running with empty queue (0,no,false is no, 1,yes,true is yes)                              |
 | `SQSD_SLEEP_SECONDS`                    | `0`                | no                                 | Number of seconds to wait after polling empty queue when daemonized                           |
 | `SQSD_WAIT_TIME_SECONDS`                | `20` (max: `20`)   | no                                 | Long polling wait time when querying the queue.                                               |
@@ -57,13 +60,10 @@ Environment Variables and defaults are loaded from `config/sqsd-default-config.g
     node run-cli.js
 
 #### Using Docker (with service/worker hosted outside this container)
-Use this run configuration when your worker is running in another container or in a remote server. 
- 
+Use this run configuration when your worker is running in another container or in a remote server.
+
     cd /your/sqsd/local/path
     docker build -t someImageName .
     docker run -e -e SQSD_WORKER_HTTP_URL=http://someRemoteHost/someRemotePath someImageName
 
 **Remember that if you are running your worker on your Docker host's instance, you cannot use `localhost` as the worker host path since the `localhost` in this case will be the container's address, not your host's. Use linked containers instead
-
-
-

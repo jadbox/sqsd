@@ -1,15 +1,17 @@
-FROM node:4
+FROM stackci/node:6
 
-MAINTAINER Aleksandr Popov  <mogadanez@gmail.com>
+EXPOSE 80
 
-# Create sqsd directory
-WORKDIR /
-RUN mkdir /sqsd
+MAINTAINER Jonathan Dunlap  <jdunlap@outlook.com>
 
-# Copy sqsd source including
-COPY ./ /sqsd
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+COPY ./package.json .
+RUN npm install --production
+
+COPY . .
 
 # Run sqsd
-WORKDIR /sqsd
-CMD ["node", "run-cli.js"]
-
+ENTRYPOINT ["npm"]
+CMD ["start"]

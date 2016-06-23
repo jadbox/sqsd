@@ -38,6 +38,7 @@ program.parse(process.argv);
 var defaults = {
      region: "us-east-1"
     , maxMessages: 10
+    , maxRequests: 10
     , daemonized: false
     , sleep: 0
     , waitTime: 20
@@ -54,6 +55,7 @@ var envParams = { accessKeyId: process.env.AWS_ACCESS_KEY_ID
     , region: process.env.SQSD_QUEUE_REGION_NAME || process.env.AWS_DEFAULT_REGION
     , queueUrl: process.env.SQSD_QUEUE_URL
     , maxMessages: process.env.SQSD_MAX_MESSAGES_PER_REQUEST
+    , maxRequests: process.env.SQSD_MAX_REQUESTS
     , daemonized:  (process.env.SQSD_RUN_DAEMONIZED || "") in { "1":1, "yes":1, "true":1 }
     , sleep: process.env.SQSD_SLEEP_SECONDS
     , waitTime: process.env.SQSD_WAIT_TIME_SECONDS
