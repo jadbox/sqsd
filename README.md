@@ -44,13 +44,13 @@ Environment Variables and defaults are loaded from `config/sqsd-default-config.g
 | `SQSD_MAX_MESSAGES_PER_REQUEST`         | `10` (max: `10`)   | no                                 | Max number of messages to retrieve per request.                                               |
 | `SQSD_QUEUE_REGION_NAME` or `AWS_DEFAULT_REGION`| `us-east-1`        | no                                 | The region name of the AWS SQS queue                                                          |
 | `SQSD_QUEUE_URL`                        | -                  | yes                                | Your queue URL.                                                                               |
-| `SQSD_MAX_REQUESTS`                     | `10`               | no                                 | Max number of requests to send workers at any one time (best try)                             |
+| `SQSD_MAX_REQUESTS`                     | `10`               | no                                 | Max requests to send workers at any one time. Must be multiples of SQSD_MAX_MESSAGES_PER_REQUEST |
 | `SQSD_RUN_DAEMONIZED`                   | `0`                | no                                 | Whether to continue running with empty queue (0,no,false is no, 1,yes,true is yes)                              |
 | `SQSD_SLEEP_SECONDS`                    | `0`                | no                                 | Number of seconds to wait after polling empty queue when daemonized                           |
 | `SQSD_WAIT_TIME_SECONDS`                | `20` (max: `20`)   | no                                 | Long polling wait time when querying the queue.                                               |
 | `SQSD_WORKER_HTTP_URL`                  | -                  | yes                                | Web urk address to your service.                                                              |
 | `SQSD_WORKER_HTTP_REQUEST_CONTENT_TYPE` | `application/json` | no                                 | Message MIME Type.                                                                            |
-| `SQSD_WORKER_CONCURRENCY`               | 3                  | no                                 | Number of concurrent http request to worker service                                           |
+| `SQSD_WORKER_CONCURRENCY`               | 3 (wip-not used)   | no                                 | Number of concurrent http request to worker service                                           |
 | `SQSD_WORKER_TIMEOUT`                   | 60000              | no                                 | Timeout for waiting response from worker, ms                                                  |
 | `SQSD_WORKER_HEALTH_URL`                | -                  | no                                 | Url for checking that worker is running, useful when running in linked containers and worker needs some time to  up.                                                |
 | `SQSD_WORKER_HEALTH_WAIT_TIME`          | 10000              | no                                 | Timeout for waiting while worker become  health, ms                                                  |

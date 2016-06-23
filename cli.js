@@ -82,7 +82,8 @@ if ( ( !mergedParams.queueUrl) || !mergedParams.webHook ) {
 
 logger.init( mergedParams.verbose );
 logger.info('SQSD v' + pkg.version);
-new sqsd(mergedParams).start()
+var s = new sqsd(mergedParams)
+s.start()
     .then(()=>{
         process.exit(0);
     })
@@ -90,3 +91,15 @@ new sqsd(mergedParams).start()
         logger.error( {err:err}, "Unexpected error")
         process.exit(1);
     })
+
+process.on('SIGTERM', function () {
+  s.close(function () {
+    process.exit(0);
+  }).then(()=>{
+      process.exit(0);
+  })
+  .catch( err=> {
+      logger.error( {err:err}, "Unexpected error")
+      process.exit(1);
+  })
+});
