@@ -66,7 +66,7 @@ var envParams = { accessKeyId: process.env.AWS_ACCESS_KEY_ID
     , timeout: process.env.SQSD_WORKER_TIMEOUT
     , workerHealthUrl: process.env.SQSD_WORKER_HEALTH_URL
     , workerHealthWaitTime: process.env.SQSD_WORKER_HEALTH_WAIT_TIME
-    , verbose: 0
+    , verbose: process.env.SQSD_VERBOSE || 0
 }
 
 

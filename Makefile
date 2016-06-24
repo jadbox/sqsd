@@ -3,7 +3,10 @@ build: Dockerfile
 	docker build -t ${DOCKER_IMAGE_NAME} .
 
 run: build
-	docker run -it --name=sqsd --env-file ./.env --rm ${DOCKER_IMAGE_NAME} ${ARGS}
+	docker run -it --name=sqsd --env-file ./.env-priv --rm ${DOCKER_IMAGE_NAME} ${ARGS}
 
-local: run
-	@echo "no op"
+local: build
+	docker run -it --link sqsd_worker --name=sqsd --env-file ./.env-priv --rm ${DOCKER_IMAGE_NAME} ${ARGS}
+
+echo:
+	docker run -ti -p 8800:8800 --name sqsd_worker --rm luisbebop/echo-server
