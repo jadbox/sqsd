@@ -50,7 +50,8 @@ var defaults = {
     , verbose: 0
 }
 
-var envParams = { accessKeyId: process.env.AWS_ACCESS_KEY_ID
+var envParams = {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID
     , secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
     , region: process.env.SQSD_QUEUE_REGION_NAME || process.env.AWS_DEFAULT_REGION
     , queueUrl: process.env.SQSD_QUEUE_URL
@@ -68,8 +69,6 @@ var envParams = { accessKeyId: process.env.AWS_ACCESS_KEY_ID
     , workerHealthWaitTime: process.env.SQSD_WORKER_HEALTH_WAIT_TIME
     , verbose: process.env.SQSD_VERBOSE || 0
 }
-
-
 
 var mergedParams = _.defaults( _.pick ( program, _.keys(envParams) ), envParams, defaults );
 
