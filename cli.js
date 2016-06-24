@@ -91,12 +91,19 @@ s.start()
         process.exit(1);
     })
 
-process.on('SIGTERM', function () {
-  s.close().then(()=>{
-      process.exit(0);
-  })
-  .catch( err=> {
-      logger.error( {err:err}, "Unexpected error")
-      process.exit(1);
-  })
-});
+killproc('SIGTERM');
+killproc('SIGINT');
+
+function killproc(kind) {
+  process.on('SIGTERM', function () {
+    console.log('Shutting down');
+    s.close().then(()=>{
+        console.log('Graceful shutdown')
+        process.exit(0);
+    })
+    .catch( err=> {
+        logger.error( {err:err}, "Unexpected error")
+        process.exit(1);
+    })
+  });
+}
