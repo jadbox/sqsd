@@ -93,16 +93,20 @@ s.start()
 
 killproc('SIGTERM');
 killproc('SIGINT');
+killproc('SIGHUP');
+killproc('SIGQUIT');
+killproc('SIGABRT');
 
 function killproc(kind) {
   process.on('SIGTERM', function () {
-    console.log('Shutting down');
+    console.log('Shutting down ['+kind+']');
+    var ended = false;
     s.close().then(()=>{
-        console.log('Graceful shutdown')
+        console.log('Graceful shutdown ['+kind+']');
         process.exit(0);
     })
     .catch( err=> {
-        logger.error( {err:err}, "Unexpected error")
+        logger.error( {err:err}, 'Unexpected error ['+kind+']');
         process.exit(1);
     })
   });

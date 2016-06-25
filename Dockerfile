@@ -13,5 +13,6 @@ RUN npm install --production
 COPY . .
 RUN chmod u+x ./start.sh
 # Run sqsd
+
 ENTRYPOINT []
-CMD "./start.sh"
+CMD ["./start.sh"]
